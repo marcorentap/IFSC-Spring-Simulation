@@ -28,22 +28,24 @@ class sliderControl:
 
 #Reusable text entry template
 class entryControl:
-    def __init__(self, master, name, default):
+    def __init__(self, master, name, variableName, default):
         self.name = name
         self.default = default
-
+        self.variableName = variableName
         self.label = tk.Label(master, text=self.name)
         self.label.grid(sticky=tk.W)
-        self.entry = tk.Entry(master, width=3)
+        self.entry = tk.Entry(master, width=8, textvariable=self.variableName)
+        self.entry.insert(0, self.default)
         self.entry.grid(sticky=tk.W)
 
 class MainApplication(tk.Tk):
     def UpdateControls(self):
-        self.springConstant = self.springConstantControl.get()
-        self.mass = self.massControl.get()
-        self.initialDisplacement = self.initialDisplacementControl.get()
-        self.velocity = self.velocityControl.get()
-        self.timeStep = self.timeStepControl.get()
+        self.springConstant = round(float(self.springConstantControl.get()), 3)
+        self.mass = round(float(self.massControl.get()), 3)
+        self.initialDisplacement = round(float(self.initialDisplacementControl.get()), 3)
+        self.velocity = round(float(self.velocityControl.get()), 3)
+        self.timeStep = round(float(self.timeStepControl.get()), 3)
+
         self.movementMultiplier = self.movementMultiplierControl.get()
         self.springLength = self.springLengthControl.get()
         self.stopStep = self.stopStepControl.get()
@@ -93,11 +95,12 @@ class MainApplication(tk.Tk):
         self.approximateData = []
 
         #Control variables
-        self.springConstantControl = tk.DoubleVar()
-        self.massControl = tk.DoubleVar()
-        self.initialDisplacementControl = tk.DoubleVar()
-        self.velocityControl = tk.DoubleVar()
-        self.timeStepControl = tk.DoubleVar()
+        self.springConstantControl = tk.StringVar()
+        self.massControl = tk.StringVar()
+        self.initialDisplacementControl = tk.StringVar()
+        self.velocityControl = tk.StringVar()
+        self.timeStepControl = tk.StringVar()
+
         self.movementMultiplierControl = tk.DoubleVar()
         self.springLengthControl = tk.DoubleVar()
         self.graphFromControl = tk.IntVar()
@@ -112,11 +115,11 @@ class MainApplication(tk.Tk):
 
         # ***** Control Frame *****
         #Equation variables
-        springConstantControl = sliderControl(self.controlFrame, "Spring Constant, k (N/m)", self.springConstantControl, [0, 50], 0.01, 1)
-        massControl = sliderControl(self.controlFrame, "Mass, m (kg)", self.massControl, [0, 100], 0.1, 4)
-        initialDisplacementControl = sliderControl(self.controlFrame, "Initial Displacement, y₀ (m)", self.initialDisplacementControl, [-10, 10], 0.01, 1)
-        velocityControl = sliderControl(self.controlFrame, "Velocity, y₀' (m/s)", self.velocityControl, [0, 50], 0.1, 5)
-        timeStepControl = sliderControl(self.controlFrame, "timeStep, h", self.timeStepControl, [0, 3], 0.01, 0.2)
+        springConstantControl = entryControl(self.controlFrame, "Spring Constant, k (N/m", self.springConstantControl, 1)
+        massControl = entryControl(self.controlFrame, "Spring Constant, k (N/m)", self.massControl, 4)
+        initialDisplacementControl = entryControl(self.controlFrame, "Initial Displacement, y₀ (m)", self.initialDisplacementControl, 1)
+        velocityControl = entryControl(self.controlFrame, "Velocity, y₀' (m/s)", self.velocityControl, 5)
+        timeStepControl = entryControl(self.controlFrame, "timeStep, h", self.timeStepControl, 0.2)
 
         #Other variables
         movementMultiplierControl = sliderControl(self.controlFrame, "Movement Multiplier", self.movementMultiplierControl, [0, 10], 0.1, 1)
