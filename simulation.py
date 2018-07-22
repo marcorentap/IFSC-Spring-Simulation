@@ -59,11 +59,11 @@ class MainApplication(tk.Tk):
         exactComputeTime = end-start
 
         start = time.time()
-        self.approximateData = cal.GetApproximateValues(self.stopStep, self, refs.ETSHM6_6_inf)
+        self.approximateData = cal.GetApproximateValues(self.stopStep, self, refs.ETSHM6)
         end = time.time()
         approximateComputeTime = end-start
 
-        differences = [abs(self.exactData[i] - self.approximateData[i]) for i in range(0, len(self.exactData))]
+        differences = [abs(self.exactData[i] - self.approximateData[i]) for i in range(0, self.stopStep)]
         self.globalErrorLabel.config(text="Global error: {}".format(str(round(max(differences), 10))))
         self.canvas1LabelTime.config(text="Numerical compute time: {}s".format(round(approximateComputeTime, 4)))
         self.canvas2LabelTime.config(text="Exact value compute time: {}s".format(round(exactComputeTime, 4)))
@@ -81,28 +81,6 @@ class MainApplication(tk.Tk):
         self.stopStepControl.set(1000)
         self.graphFromControl.set(0)
         self.graphToControl.set(25)
-
-        simulationCanvas1 = tk.Canvas(self.simulationFrame, width=250, height=800)
-        simulationCanvas2 = tk.Canvas(self.simulationFrame, width=250, height=800)
-
-        start = time.time()
-        self.exactData = cal.GetExactValues(self.stopStep, self)
-        for data in exactData:
-            print(data)
-        end = time.time()
-        exactComputeTime = end-start
-
-        start = time.time()
-        self.approximateData = cal.GetApproximateValues(self.stopStep, self, refs.ETSHM6_6_inf)
-        end = time.time()
-        approximateComputeTime = end-start
-
-        differences = [abs(self.exactData[i] - self.approximateData[i]) for i in range(0, len(self.exactData))]
-        self.globalErrorLabel.config(text="Global error: {}".format(str(max(differences))))
-        self.canvas1LabelTime.config(text="Numerical compute time: {}s".format(round(approximateComputeTime, 4)))
-        self.canvas2LabelTime.config(text="Exact value compute time: {}s".format(round(exactComputeTime, 4)))
-        self.CreateGraph()
-        self.CreateSimulation(simulationCanvas1, simulationCanvas2)
 
     def __init__(self):
         tk.Tk.__init__(self)
@@ -133,18 +111,23 @@ class MainApplication(tk.Tk):
         self.graphFrame.grid(row=0, column=2, padx=10, pady=10, columnspan=1)
 
         # ***** Control Frame *****
-        springConstantControl = sliderControl(self.controlFrame, "Spring Constant (N/m)", self.springConstantControl, [0, 50], 0.1, 1)
-        massControl = sliderControl(self.controlFrame, "Mass (kg)", self.massControl, [0, 100], 0.1, 4)
-        initialDisplacementControl = sliderControl(self.controlFrame, "Initial Displacement (m)", self.initialDisplacementControl, [-10, 10], 0.1, 1)
-        velocityControl = sliderControl(self.controlFrame, "Velocity (m/s)", self.velocityControl, [0, 50], 0.1, 5)
-        timeStepControl = sliderControl(self.controlFrame, "timeStep", self.timeStepControl, [0, 3], 0.01, 0.2)
+        #Equation variables
+        springConstantControl = sliderControl(self.controlFrame, "Spring Constant, k (N/m)", self.springConstantControl, [0, 50], 0.01, 1)
+        massControl = sliderControl(self.controlFrame, "Mass, m (kg)", self.massControl, [0, 100], 0.1, 4)
+        initialDisplacementControl = sliderControl(self.controlFrame, "Initial Displacement, y₀ (m)", self.initialDisplacementControl, [-10, 10], 0.01, 1)
+        velocityControl = sliderControl(self.controlFrame, "Velocity, y₀' (m/s)", self.velocityControl, [0, 50], 0.1, 5)
+        timeStepControl = sliderControl(self.controlFrame, "timeStep, h", self.timeStepControl, [0, 3], 0.01, 0.2)
+
+        #Other variables
         movementMultiplierControl = sliderControl(self.controlFrame, "Movement Multiplier", self.movementMultiplierControl, [0, 10], 0.1, 1)
         springLengthControl = sliderControl(self.controlFrame, "Spring Length (px)", self.springLengthControl, [0, 1080], 0.1, 480)
-        stopStepControl = sliderControl(self.controlFrame, "Stop Step", self.stopStepControl, [0, 10000], 10, 1000)
-        graphFromControl = sliderControl(self.controlFrame, "Graph from", self.graphFromControl, [0, 10000], 10, 0)
-        graphToControl = sliderControl(self.controlFrame, "Graph to", self.graphToControl, [0,10000], 10, 25)
+        stopStepControl = sliderControl(self.controlFrame, "Stop Step", self.stopStepControl, [0, 10000], 10, 100)
+        graphFromControl = sliderControl(self.controlFrame, "Graph from", self.graphFromControl, [0, 10000], 10, 100)
+        graphToControl = sliderControl(self.controlFrame, "Graph to", self.graphToControl, [0,10000], 10, 0)
+
+        #Buttons
         updateButton = tk.Button(self.controlFrame, text="Update", command=self.UpdateControls).grid(sticky=tk.W, pady=5)
-        resetButton = tk.Button(self.controlFrame, text="Reset", command=self.ResetControls).grid(sticky=tk.W, pady=5)
+        resetButton = tk.Button(self.controlFrame, text="Reset Controls", command=self.ResetControls).grid(sticky=tk.W, pady=5)
         exitButton = tk.Button(self.controlFrame, text="Exit", command=self.destroy).grid(sticky=tk.W, pady=5)
 
         self.globalErrorLabel = tk.Label(self.controlFrame, text="Global error: ")
@@ -210,7 +193,7 @@ class MainApplication(tk.Tk):
 
             simulationCanvas1.update()
             simulationCanvas2.update()
-            time.sleep(0.1)
+            time.sleep(0.05)
 
 app = MainApplication()
 app.mainloop()
