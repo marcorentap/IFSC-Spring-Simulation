@@ -2,7 +2,7 @@ import tkinter as tk
 import graphics
 import numpy as np
 import calculation as cal
-import refs
+import methods
 import time
 #matplotlib to tkinter
 import matplotlib
@@ -52,8 +52,8 @@ class MainApplication(tk.Tk):
         self.graphFrom = self.graphFromControl.get()
         self.graphTo = self.graphToControl.get()
 
-        simulationCanvas1 = tk.Canvas(self.simulationFrame, width=250, height=800)
-        simulationCanvas2 = tk.Canvas(self.simulationFrame, width=250, height=800)
+        simulationCanvas1 = tk.Canvas(self.simulationFrame, width=150, height=800)
+        simulationCanvas2 = tk.Canvas(self.simulationFrame, width=150, height=800)
 
         start = time.time()
         self.exactData = cal.GetExactValues(self.stopStep, self)
@@ -61,14 +61,14 @@ class MainApplication(tk.Tk):
         exactComputeTime = end-start
 
         start = time.time()
-        self.approximateData = cal.GetApproximateValues(self.stopStep, self, refs.ETSHM6)
+        self.approximateData = cal.GetApproximateValues(self.stopStep, self, methods.NewMethod2)
         end = time.time()
         approximateComputeTime = end-start
 
         differences = [abs(self.exactData[i] - self.approximateData[i]) for i in range(0, self.stopStep)]
         self.globalErrorLabel.config(text="Global error: {}".format(str(round(max(differences), 10))))
-        self.canvas1LabelTime.config(text="Numerical compute time: {}s".format(round(approximateComputeTime, 4)))
-        self.canvas2LabelTime.config(text="Exact value compute time: {}s".format(round(exactComputeTime, 4)))
+        self.canvas1LabelTime.config(text="Numerical compute time: {}s".format(round(approximateComputeTime, 8)))
+        self.canvas2LabelTime.config(text="Exact value compute time: {}s".format(round(exactComputeTime, 8)))
         self.CreateGraph()
         self.CreateSimulation(simulationCanvas1, simulationCanvas2)
 
@@ -80,9 +80,9 @@ class MainApplication(tk.Tk):
         self.timeStepControl.set(0.2)
         self.movementMultiplierControl.set(1)
         self.springLengthControl.set(480)
-        self.stopStepControl.set(1000)
+        self.stopStepControl.set(100)
         self.graphFromControl.set(0)
-        self.graphToControl.set(25)
+        self.graphToControl.set(100)
 
     def __init__(self):
         tk.Tk.__init__(self)
@@ -126,16 +126,16 @@ class MainApplication(tk.Tk):
         #Other variables
         movementMultiplierControl = sliderControl(self.controlFrame, "Movement Multiplier", self.movementMultiplierControl, [0, 10], 0.1, 1)
         springLengthControl = sliderControl(self.controlFrame, "Spring Length (px)", self.springLengthControl, [0, 1080], 0.1, 480)
-        stopStepControl = sliderControl(self.controlFrame, "Stop Step", self.stopStepControl, [0, 10000], 10, 100)
-        graphFromControl = sliderControl(self.controlFrame, "Graph from", self.graphFromControl, [0, 10000], 10, 100)
-        graphToControl = sliderControl(self.controlFrame, "Graph to", self.graphToControl, [0,10000], 10, 0)
+        stopStepControl = sliderControl(self.controlFrame, "Stop Step", self.stopStepControl, [0, 10000], 1, 100)
+        graphFromControl = sliderControl(self.controlFrame, "Graph from", self.graphFromControl, [0, 10000], 1, 0)
+        graphToControl = sliderControl(self.controlFrame, "Graph to", self.graphToControl, [0,10000], 10, 100)
 
         #Buttons
         updateButton = tk.Button(self.controlFrame, text="Update", command=self.UpdateControls).grid(sticky=tk.W, pady=5)
         resetButton = tk.Button(self.controlFrame, text="Reset Controls", command=self.ResetControls).grid(sticky=tk.W, pady=5)
         exitButton = tk.Button(self.controlFrame, text="Exit", command=self.destroy).grid(sticky=tk.W, pady=5)
 
-        self.globalErrorLabel = tk.Label(self.textFrame, text="Global error: ")
+        self.globalErrorLabel = tk.Label(self.textFrame, text="Global error: ", width=30)
         self.globalErrorLabel.grid(sticky=tk.W, pady=5)
 
         #Initial labels
@@ -180,15 +180,14 @@ class MainApplication(tk.Tk):
         # ----- Simulations -----
         #Define the entities
         object1 = graphics.Object(50)
-        spring1 = graphics.Spring(object1, (250/2, 10), 100, self.springLength, 20, 8)
+        spring1 = graphics.Spring(object1, (150/2, 10), 100, self.springLength, 20, 8)
         object2 = graphics.Object(50)
-        spring2 = graphics.Spring(object2, (250/2, 10), 100, self.springLength, 20, 8)
+        spring2 = graphics.Spring(object2, (150/2, 10), 100, self.springLength, 20, 8)
 
         #Animate the entities
-        for x in range(0, len(self.exactData)):
-            object1.displacement = self.approximateData[x] * self.movementMultiplier # TODO: Use the equations here
-            object2.displacement = self.exactData[x] * self.movementMultiplier # TODO: Use the equations here
-            #absoluteError = abs(self.approximateData[x] - self.exactData[x])
+        for x in range(0, self.stopStep):
+            object1.displacement = self.approximateData[x] * self.movementMultiplier
+            object2.displacement = self.exactData[x] * self.movementMultiplier
             simulationCanvas1.delete("all")
             simulationCanvas2.delete("all")
             spring1.Update()
