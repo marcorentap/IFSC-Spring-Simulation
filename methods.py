@@ -1,6 +1,5 @@
 import numpy as np
 
-
 class Method:
     def __init__(self, valueMatrix):
         self.valueMatrix = np.array(valueMatrix)
@@ -77,7 +76,7 @@ ETSHM6_Mentor = Method([
 [0, 0, 0, 0, 0, 0],
 [3/4, 7/128, 77/128, 0, 0, 0],
 [3/4, -37/896, -9/128,  1/56, 0, 0],
-[18/91, 391/351, -8/189, -56/351, 0],
+[1, 8/91, 391/351, -8/189, -56/351, 0],
 [np.nan, -13/420, 59/90, 64/315, 64/315, -13/420]
 ])
 
