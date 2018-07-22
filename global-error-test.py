@@ -26,8 +26,8 @@ def GetCase1_0_2():
     sce_diffValue = [value[1] for value in sce_differences]
 
     print("Case 1, 0.2")
-    # for i in range(step + 1):
-    #     print("{} : {} : {}".format(exactResults[i], approximateResults[i], differences[i]))
+    for i in range(step + 1):
+        print("{} : {} : {}".format(sc_exactResults[i], sc_approximateResults[i], sc_differences[i]))
 
     print("Global error (Not Expanded): {}".format(max(sc_diffValue)))
     print("Global error (Expanded): {}".format(max(sce_diffValue)))
