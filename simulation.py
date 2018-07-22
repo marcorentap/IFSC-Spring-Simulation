@@ -128,7 +128,7 @@ class MainApplication(tk.Tk):
         # ***** Control Frame *****
         # Equation variables
         springConstantControl = entryControl(self.controlFrame, "Spring Constant, k (N/m", self.springConstantControl, 1)
-        massControl = entryControl(self.controlFrame, "Spring Constant, k (N/m)", self.massControl, 4)
+        massControl = entryControl(self.controlFrame, "mass, m (kg)", self.massControl, 4)
         initialDisplacementControl = entryControl(self.controlFrame, "Initial Displacement, y₀ (m)", self.initialDisplacementControl, 1)
         velocityControl = entryControl(self.controlFrame, "Velocity, y₀' (m/s)", self.velocityControl, 5)
         timeStepControl = entryControl(self.controlFrame, "timeStep, h", self.timeStepControl, 0.2)
