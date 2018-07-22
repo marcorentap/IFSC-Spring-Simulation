@@ -61,7 +61,7 @@ class MainApplication(tk.Tk):
         exactComputeTime = end-start
 
         start = time.time()
-        self.approximateData = cal.GetApproximateValues(self.stopStep, self, methods.NewMethod2)
+        self.approximateData = cal.GetApproximateValues(self.stopStep, self, self.method)
         end = time.time()
         approximateComputeTime = end-start
 
@@ -91,6 +91,7 @@ class MainApplication(tk.Tk):
         self.controlFrame.grid(sticky=tk.N, row=0, column=0, padx=10, pady=10)
         self.textFrame = tk.Frame(self)
         self.textFrame.grid(sticky=tk.N, row=0, column=1, padx=10, pady=10)
+        self.method = methods.NewMethod2
 
         #Data variables
         self.exactData = []
