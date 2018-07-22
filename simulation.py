@@ -45,6 +45,16 @@ class MainApplication(tk.Tk):
         self.initialDisplacement = round(float(self.initialDisplacementControl.get()), 3)
         self.velocity = round(float(self.velocityControl.get()), 3)
         self.timeStep = round(float(self.timeStepControl.get()), 3)
+        
+        methodDict = {
+            1 : methods.NewMethod1,
+            2 : methods.NewMethod2,
+            3 : methods.ETSHM6,
+            4 : methods.ETSHM6_8_7,
+            5 : methods.ETSHM6_6_inf,
+            6 : methods.ETSHM6_Mentor 
+        }
+        self.method = methodDict.get(self.methodControl.get())
 
         self.movementMultiplier = self.movementMultiplierControl.get()
         self.springLength = self.springLengthControl.get()
@@ -91,7 +101,6 @@ class MainApplication(tk.Tk):
         self.controlFrame.grid(sticky=tk.N, row=0, column=0, padx=10, pady=10)
         self.textFrame = tk.Frame(self)
         self.textFrame.grid(sticky=tk.N, row=0, column=1, padx=10, pady=10)
-        self.method = methods.NewMethod2
 
         #Data variables
         self.exactData = []
@@ -109,7 +118,8 @@ class MainApplication(tk.Tk):
         self.graphFromControl = tk.IntVar()
         self.graphToControl = tk.IntVar()
         self.stopStepControl = tk.IntVar()
-
+        self.methodControl = tk.IntVar()
+        self.methodControl.set(3)
 
         self.simulationFrame = tk.Frame(self)
         self.simulationFrame.grid(sticky=tk.N, row=0, column=2, padx=10, pady=10, columnspan=1)
@@ -117,21 +127,29 @@ class MainApplication(tk.Tk):
         self.graphFrame.grid(row=0, column=3, padx=10, pady=10, columnspan=1)
 
         # ***** Control Frame *****
-        #Equation variables
+        # Equation variables
         springConstantControl = entryControl(self.controlFrame, "Spring Constant, k (N/m", self.springConstantControl, 1)
         massControl = entryControl(self.controlFrame, "Spring Constant, k (N/m)", self.massControl, 4)
         initialDisplacementControl = entryControl(self.controlFrame, "Initial Displacement, y₀ (m)", self.initialDisplacementControl, 1)
         velocityControl = entryControl(self.controlFrame, "Velocity, y₀' (m/s)", self.velocityControl, 5)
         timeStepControl = entryControl(self.controlFrame, "timeStep, h", self.timeStepControl, 0.2)
 
-        #Other variables
+        # Other variables
         movementMultiplierControl = sliderControl(self.controlFrame, "Movement Multiplier", self.movementMultiplierControl, [0, 10], 0.1, 1)
         springLengthControl = sliderControl(self.controlFrame, "Spring Length (px)", self.springLengthControl, [0, 1080], 0.1, 480)
         stopStepControl = sliderControl(self.controlFrame, "Stop Step", self.stopStepControl, [0, 10000], 1, 100)
         graphFromControl = sliderControl(self.controlFrame, "Graph from", self.graphFromControl, [0, 10000], 1, 0)
         graphToControl = sliderControl(self.controlFrame, "Graph to", self.graphToControl, [0,10000], 10, 100)
 
-        #Buttons
+        # MethodControl
+        radioNewMethod1Control = tk.Radiobutton(self.controlFrame, text="New Method 1", variable=self.methodControl, value=1).grid(sticky=tk.W)
+        radioNewMethod2Control = tk.Radiobutton(self.controlFrame, text="New Method 2", variable=self.methodControl, value=2).grid(sticky=tk.W)
+        radioETSHM6Control = tk.Radiobutton(self.controlFrame, text="ETSHM6", variable=self.methodControl, value=3).grid(sticky=tk.W)
+        radioETSHM6_8_7Control = tk.Radiobutton(self.controlFrame, text="ETSHM6(8, 7)", variable=self.methodControl, value=4).grid(sticky=tk.W)
+        radioETSHM6_6_infControl = tk.Radiobutton(self.controlFrame, text="ETSHM6(6, ∞)", variable=self.methodControl, value=5).grid(sticky=tk.W)
+        # radioETSHM6_Mentor = tk.Radiobutton(self.controlFrame, text="New Method 1", variable=self.methodControl, value=6r)
+
+        # Buttons
         updateButton = tk.Button(self.controlFrame, text="Update", command=self.UpdateControls).grid(sticky=tk.W, pady=5)
         resetButton = tk.Button(self.controlFrame, text="Reset Controls", command=self.ResetControls).grid(sticky=tk.W, pady=5)
         exitButton = tk.Button(self.controlFrame, text="Exit", command=self.destroy).grid(sticky=tk.W, pady=5)
