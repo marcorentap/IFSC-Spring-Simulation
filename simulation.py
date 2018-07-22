@@ -88,7 +88,9 @@ class MainApplication(tk.Tk):
         tk.Tk.__init__(self)
         self.wm_title("Spring Simulation")
         self.controlFrame = tk.Frame(self)
-        self.controlFrame.grid(row=0, column=0, padx=10, pady=10, sticky="N", columnspan=1)
+        self.controlFrame.grid(sticky=tk.N, row=0, column=0, padx=10, pady=10)
+        self.textFrame = tk.Frame(self)
+        self.textFrame.grid(sticky=tk.N, row=0, column=1, padx=10, pady=10)
 
         #Data variables
         self.exactData = []
@@ -109,9 +111,9 @@ class MainApplication(tk.Tk):
 
 
         self.simulationFrame = tk.Frame(self)
-        self.simulationFrame.grid(row=0, column=1, padx=10, pady=10, columnspan=1)
+        self.simulationFrame.grid(sticky=tk.N, row=0, column=2, padx=10, pady=10, columnspan=1)
         self.graphFrame = tk.Frame(self)
-        self.graphFrame.grid(row=0, column=2, padx=10, pady=10, columnspan=1)
+        self.graphFrame.grid(row=0, column=3, padx=10, pady=10, columnspan=1)
 
         # ***** Control Frame *****
         #Equation variables
@@ -133,16 +135,16 @@ class MainApplication(tk.Tk):
         resetButton = tk.Button(self.controlFrame, text="Reset Controls", command=self.ResetControls).grid(sticky=tk.W, pady=5)
         exitButton = tk.Button(self.controlFrame, text="Exit", command=self.destroy).grid(sticky=tk.W, pady=5)
 
-        self.globalErrorLabel = tk.Label(self.controlFrame, text="Global error: ")
+        self.globalErrorLabel = tk.Label(self.textFrame, text="Global error: ")
         self.globalErrorLabel.grid(sticky=tk.W, pady=5)
 
         #Initial labels
         canvas1Label = tk.Label(self.simulationFrame, text="Numerical Method")
-        self.canvas1LabelTime = tk.Label(self.controlFrame, text="Numerical compute time:")
+        self.canvas1LabelTime = tk.Label(self.textFrame, text="Numerical compute time:")
         canvas1Label.grid(row=0, column=0)
         self.canvas1LabelTime.grid(sticky=tk.W,pady=5)
         canvas2Label = tk.Label(self.simulationFrame, text="Exact Value")
-        self.canvas2LabelTime = tk.Label(self.controlFrame, text="Exact value compute time:")
+        self.canvas2LabelTime = tk.Label(self.textFrame, text="Exact value compute time:")
         canvas2Label.grid(row=0, column=1)
         self.canvas2LabelTime.grid(sticky=tk.W,pady=5)
 
