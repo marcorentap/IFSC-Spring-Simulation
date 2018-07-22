@@ -45,14 +45,13 @@ class MainApplication(tk.Tk):
         self.initialDisplacement = round(float(self.initialDisplacementControl.get()), 3)
         self.velocity = round(float(self.velocityControl.get()), 3)
         self.timeStep = round(float(self.timeStepControl.get()), 3)
-        
+
         methodDict = {
             1 : methods.NewMethod1,
             2 : methods.NewMethod2,
             3 : methods.ETSHM6,
             4 : methods.ETSHM6_8_7,
-            5 : methods.ETSHM6_6_inf,
-            6 : methods.ETSHM6_Mentor 
+            5 : methods.ETSHM6_6_inf
         }
         self.method = methodDict.get(self.methodControl.get())
 
@@ -147,7 +146,6 @@ class MainApplication(tk.Tk):
         radioETSHM6Control = tk.Radiobutton(self.controlFrame, text="ETSHM6", variable=self.methodControl, value=3).grid(sticky=tk.W)
         radioETSHM6_8_7Control = tk.Radiobutton(self.controlFrame, text="ETSHM6(8, 7)", variable=self.methodControl, value=4).grid(sticky=tk.W)
         radioETSHM6_6_infControl = tk.Radiobutton(self.controlFrame, text="ETSHM6(6, ∞)", variable=self.methodControl, value=5).grid(sticky=tk.W)
-        # radioETSHM6_Mentor = tk.Radiobutton(self.controlFrame, text="New Method 1", variable=self.methodControl, value=6r)
 
         # Buttons
         updateButton = tk.Button(self.controlFrame, text="Update", command=self.UpdateControls).grid(sticky=tk.W, pady=5)
