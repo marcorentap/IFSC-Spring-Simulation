@@ -95,6 +95,7 @@ class MainApplication(tk.Tk):
 
     def __init__(self):
         tk.Tk.__init__(self)
+        self.iconbitmap("spring.ico")
         self.wm_title("Spring Simulation by Marc Owen")
         self.controlFrame = tk.Frame(self)
         self.controlFrame.grid(sticky=tk.N, row=0, column=0, padx=10, pady=10)
