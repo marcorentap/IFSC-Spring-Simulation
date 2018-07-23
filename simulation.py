@@ -125,6 +125,9 @@ class MainApplication(tk.Tk):
         self.graphFrame = tk.Frame(self)
         self.graphFrame.grid(row=0, column=3, padx=10, pady=10, columnspan=1)
 
+        #Shameless Plug
+        self.selfPlug = tk.Label(self, text="Marc Owen").grid(column=3, sticky="ES")
+
         # ***** Control Frame *****
         # Equation variables
         springConstantControl = entryControl(self.controlFrame, "Spring Constant, k (N/m", self.springConstantControl, 1)
@@ -136,9 +139,9 @@ class MainApplication(tk.Tk):
         # Other variables
         movementMultiplierControl = sliderControl(self.controlFrame, "Movement Multiplier", self.movementMultiplierControl, [0, 10], 0.1, 1)
         springLengthControl = sliderControl(self.controlFrame, "Spring Length (px)", self.springLengthControl, [0, 1080], 0.1, 480)
-        stopStepControl = sliderControl(self.controlFrame, "Stop Step", self.stopStepControl, [0, 10000], 1, 100)
-        graphFromControl = sliderControl(self.controlFrame, "Graph from", self.graphFromControl, [0, 10000], 1, 0)
-        graphToControl = sliderControl(self.controlFrame, "Graph to", self.graphToControl, [0,10000], 10, 100)
+        stopStepControl = sliderControl(self.controlFrame, "Stop Step", self.stopStepControl, [0, 1000], 1, 100)
+        graphFromControl = sliderControl(self.controlFrame, "Graph from", self.graphFromControl, [0, 1000], 1, 0)
+        graphToControl = sliderControl(self.controlFrame, "Graph to", self.graphToControl, [0,1000], 1, 100)
 
         # MethodControl
         radioNewMethod1Control = tk.Radiobutton(self.controlFrame, text="New Method 1", variable=self.methodControl, value=1).grid(sticky=tk.W)
