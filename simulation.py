@@ -137,9 +137,9 @@ class MainApplication(tk.Tk):
         # Other variables
         movementMultiplierControl = sliderControl(self.controlFrame, "Movement Multiplier", self.movementMultiplierControl, [0, 10], 0.1, 1)
         springLengthControl = sliderControl(self.controlFrame, "Spring Length (px)", self.springLengthControl, [0, 1080], 0.1, 480)
-        stopStepControl = sliderControl(self.controlFrame, "Stop Step", self.stopStepControl, [0, 1000], 1, 100)
-        graphFromControl = sliderControl(self.controlFrame, "Graph from", self.graphFromControl, [0, 1000], 1, 0)
-        graphToControl = sliderControl(self.controlFrame, "Graph to", self.graphToControl, [0,1000], 1, 100)
+        stopStepControl = sliderControl(self.controlFrame, "Stop Step", self.stopStepControl, [1, 1000], 1, 100)
+        graphFromControl = sliderControl(self.controlFrame, "Graph from", self.graphFromControl, [0, 999], 1, 0)
+        graphToControl = sliderControl(self.controlFrame, "Graph to", self.graphToControl, [1,1000], 1, 100)
 
         # MethodControl
         radioNewMethod1Control = tk.Radiobutton(self.controlFrame, text="New Method 1", variable=self.methodControl, value=1).grid(sticky=tk.W)
