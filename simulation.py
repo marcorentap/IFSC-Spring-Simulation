@@ -95,7 +95,7 @@ class MainApplication(tk.Tk):
 
     def __init__(self):
         tk.Tk.__init__(self)
-        self.wm_title("Spring Simulation")
+        self.wm_title("Spring Simulation by Marc Owen")
         self.controlFrame = tk.Frame(self)
         self.controlFrame.grid(sticky=tk.N, row=0, column=0, padx=10, pady=10)
         self.textFrame = tk.Frame(self)
@@ -124,9 +124,6 @@ class MainApplication(tk.Tk):
         self.simulationFrame.grid(sticky=tk.N, row=0, column=2, padx=10, pady=10, columnspan=1)
         self.graphFrame = tk.Frame(self)
         self.graphFrame.grid(row=0, column=3, padx=10, pady=10, columnspan=1)
-
-        #Shameless Plug
-        self.selfPlug = tk.Label(self, text="Marc Owen").grid(column=3, sticky="ES")
 
         # ***** Control Frame *****
         # Equation variables
