@@ -61,8 +61,8 @@ class MainApplication(tk.Tk):
         self.graphFrom = self.graphFromControl.get()
         self.graphTo = self.graphToControl.get()
 
-        simulationCanvas1 = tk.Canvas(self.simulationFrame, width=150, height=800)
-        simulationCanvas2 = tk.Canvas(self.simulationFrame, width=150, height=800)
+        simulationCanvas1 = tk.Canvas(self.simulationFrame, width=250, height=800)
+        simulationCanvas2 = tk.Canvas(self.simulationFrame, width=250, height=800)
 
         start = time.time()
         self.exactData = cal.GetExactValues(self.stopStep, self)
@@ -95,12 +95,15 @@ class MainApplication(tk.Tk):
 
     def __init__(self):
         tk.Tk.__init__(self)
+        self.geometry("1920x1080")
         self.iconbitmap("spring.ico")
         self.wm_title("Spring Simulation by Marc Owen")
         self.controlFrame = tk.Frame(self)
-        self.controlFrame.grid(sticky=tk.N, row=0, column=0, padx=10, pady=10)
+        self.controlFrame.grid(sticky=tk.N, row=0, column=0, padx=40, pady=20)
         self.textFrame = tk.Frame(self)
-        self.textFrame.grid(sticky=tk.N, row=0, column=1, padx=10, pady=10)
+        self.textFrame.grid(sticky=tk.N, row=0, column=1, padx=100, pady=20)
+        self.globalErrorFrame = tk.Frame(self.textFrame)
+        self.globalErrorFrame.grid(sticky=tk.W)
 
         #Data variables
         self.exactData = []
@@ -128,7 +131,7 @@ class MainApplication(tk.Tk):
 
         # ***** Control Frame *****
         # Equation variables
-        springConstantControl = entryControl(self.controlFrame, "Spring Constant, k (N/m", self.springConstantControl, 1)
+        springConstantControl = entryControl(self.controlFrame, "Spring Constant, k (N/m)", self.springConstantControl, 1)
         massControl = entryControl(self.controlFrame, "mass, m (kg)", self.massControl, 4)
         initialDisplacementControl = entryControl(self.controlFrame, "Initial Displacement, y₀ (m)", self.initialDisplacementControl, 1)
         velocityControl = entryControl(self.controlFrame, "Velocity, y₀' (m/s)", self.velocityControl, 5)
@@ -153,7 +156,7 @@ class MainApplication(tk.Tk):
         resetButton = tk.Button(self.controlFrame, text="Reset Controls", command=self.ResetControls).grid(sticky=tk.W, pady=5)
         exitButton = tk.Button(self.controlFrame, text="Exit", command=self.destroy).grid(sticky=tk.W, pady=5)
 
-        self.globalErrorLabel = tk.Label(self.textFrame, text="Global error: ", width=30)
+        self.globalErrorLabel = tk.Label(self.textFrame, text="Global error: ")
         self.globalErrorLabel.grid(sticky=tk.W, pady=5)
 
         #Initial labels
@@ -165,7 +168,22 @@ class MainApplication(tk.Tk):
         self.canvas2LabelTime = tk.Label(self.textFrame, text="Exact value compute time:")
         canvas2Label.grid(row=0, column=1)
         self.canvas2LabelTime.grid(sticky=tk.W,pady=5)
+        dummmyText = tk.Label(self.textFrame, text=" ", width=200)
 
+        # Global error table
+        # Method Name : Global error
+        #Method Names
+        Method1TableName = tk.Label(self.globalErrorFrame, text="Method 1").grid(sticky=tk.W, row=0, column=0)
+        Method2TableName = tk.Label(self.globalErrorFrame, text="Method 2").grid(sticky=tk.W, row=1, column=0)
+        ETSHM6_6_infTableName = tk.Label(self.globalErrorFrame, text="ETSHM6").grid(sticky=tk.W, row=2, column=0)
+        radioETSHM6_8_7TableName = tk.Label(self.globalErrorFrame, text="ETSHM6(8, 7)").grid(sticky=tk.W, row=3, column=0)
+        radioETSHM6_6_infTableName = tk.Label(self.globalErrorFrame, text="ETSHM6(6, ∞)").grid(sticky=tk.W, row=4, column=0)
+
+        Method1TableValue = tk.Label(self.globalErrorFrame, text="0.0010921203").grid(sticky=tk.W, row=0, column=1)
+        Method2TableValue = tk.Label(self.globalErrorFrame, text="4.8e-09").grid(sticky=tk.W, row=1, column=1)
+        ETSHM6_6_infTableValue = tk.Label(self.globalErrorFrame, text="2.83e-08").grid(sticky=tk.W, row=2, column=1)
+        radioETSHM6_8_7TableValue = tk.Label(self.globalErrorFrame, text="0.004418819").grid(sticky=tk.W, row=3, column=1)
+        radioETSHM6_6_infTableValue = tk.Label(self.globalErrorFrame, text="2.4e-09").grid(sticky=tk.W, row=4, column=1)
     def CreateGraph(self):
         # ***** Graph Frame *****
         #Clear frame before creating graph canvas
